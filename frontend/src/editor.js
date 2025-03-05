@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 
 const Editor = () => {
   const [content, setContent] = useState("");
@@ -12,7 +13,7 @@ const Editor = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/auth/user", { withCredentials: true })
+      .get(`${API_BASE_URL}/auth/user`, { withCredentials: true })
       .then((res) => setUser(res.data))
       .catch(() => setUser(null));
   }, []);
@@ -50,7 +51,7 @@ const Editor = () => {
     setIsSaving(true);
 
     try {
-      await axios.post("http://localhost:5000/save-to-drive", { content }, { withCredentials: true });
+      await axios.post(`${API_BASE_URL}/save-to-drive`, { content }, { withCredentials: true });
       alert("Saved to Google Drive!");
       localStorage.removeItem("draftContent");
     } catch (error) {
@@ -63,7 +64,7 @@ const Editor = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/auth/logout", { withCredentials: true });
+      const response = await axios.get(`${API_BASE_URL}/auth/logout`, { withCredentials: true });
       if (response.status === 200) {
         setUser(null);
         window.location.href = "http://localhost:3000";
