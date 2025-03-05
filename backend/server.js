@@ -47,7 +47,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://google-drive-editor.vercel.app/auth/google/callback'
+    callbackURL: 'https://drive-editor.ornender.com/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
     console.log("Logged in user email:", profile.emails[0].value); 
     return done(null, { profile, accessToken });
