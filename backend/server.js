@@ -43,11 +43,17 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const REDIRECT_URI =
+  process.env.NODE_ENV === "production"
+    ? "https://drive-editor.onrender.com/auth/google/callback"
+    : "http://localhost:10000/auth/google/callback";
+
+
 // Google OAuth Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://drive-editor.ornender.com/auth/google/callback'
+    callbackURL: REDIRECT_URI
 }, (accessToken, refreshToken, profile, done) => {
     console.log("Logged in user email:", profile.emails[0].value); 
     return done(null, { profile, accessToken });
@@ -93,7 +99,7 @@ app.get('/auth/logout', (req, res) => {
 });
 
 
-const FormData = require('form-data'); // Import FormData
+const FormData = require('form-data'); 
 
 app.post('/save-to-drive', async (req, res) => {
     console.log("User in request:", req.user);
