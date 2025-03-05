@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://google-drive-editor.vercel.app'],
     credentials: true,
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
@@ -47,7 +47,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
+    callbackURL: 'https://google-drive-editor.vercel.app/auth/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
     console.log("Logged in user email:", profile.emails[0].value); 
     return done(null, { profile, accessToken });
@@ -66,7 +66,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/' 
 }), (req, res) => {
     console.log("Logged-in User:", req.user);  
-    res.redirect('http://localhost:3000/editor');
+    res.redirect('https://google-drive-editor.vercel.app/editor');
 });
 
 // Get User Info
@@ -174,5 +174,5 @@ app.post('/save-to-drive', async (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

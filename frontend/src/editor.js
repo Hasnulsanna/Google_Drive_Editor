@@ -67,7 +67,7 @@ const Editor = () => {
       const response = await axios.get(`${API_BASE_URL}/auth/logout`, { withCredentials: true });
       if (response.status === 200) {
         setUser(null);
-        window.location.href = "http://localhost:3000";
+        window.location.href = "https://google-drive-editor.vercel.app";
       }
     } catch (error) {
       console.error("Logout failed:", error.message);
